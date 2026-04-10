@@ -4,195 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auriona · Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #07050f;
-    --bg2: #0d0b1e;
-    --gold: #FFE37A;
-    --violet: #9B63FF;
-    --rose: #F3B9D9;
-    --red: #c0392b;
-    --green: #27ae60;
-    --text: #e8e8e8;
-    --muted: #555;
-    --border: rgba(155,99,255,0.15);
+    --bg: #07050f; --bg2: #0d0b1e; --gold: #FFE37A; --violet: #9B63FF;
+    --rose: #F3B9D9; --red: #e74c3c; --green: #2ecc71; --text: #ffffff;
+    --muted: #aaaaaa; --border: rgba(155,99,255,0.15);
+    --celeste: #89CFF0; --amarillo: #FFE37A; --rosa: #F3B9D9;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif; font-size:14px; min-height:100vh; }
+  body::before { content:''; position:fixed; top:-200px; left:50%; transform:translateX(-50%); width:800px; height:800px; background:radial-gradient(ellipse,rgba(155,99,255,0.08) 0%,transparent 70%); pointer-events:none; z-index:0; }
+  .wrapper { position:relative; z-index:1; max-width:1400px; margin:0 auto; padding:40px 24px; }
 
-  /* BACKGROUND */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    width: 800px; height: 800px;
-    background: radial-gradient(ellipse, rgba(155,99,255,0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:48px; }
+  .logo { display:flex; align-items:center; gap:14px; }
+  .logo-ring { width:36px; height:36px; border-radius:50%; border:2.5px solid transparent; background:linear-gradient(var(--bg),var(--bg)) padding-box, linear-gradient(135deg,var(--gold),var(--violet)) border-box; animation:pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.7;transform:scale(.95)} }
+  .logo-text { font-size:24px; font-weight:300; letter-spacing:8px; color:#fff; }
+  .header-right { text-align:right; }
+  .header-label { font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+  .header-status { font-size:13px; color:var(--green); margin-top:4px; font-weight:500; }
+  .header-status::before { content:'● '; }
+  .header-status.error { color:var(--red); }
 
-  .wrapper { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+  .section-title { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
 
-  /* HEADER */
-  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
-  .logo { display: flex; align-items: center; gap: 14px; }
-  .logo-ring {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    background: linear-gradient(135deg, var(--gold), var(--violet)) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    animation: pulse 3s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(0.95); }
-  }
-  .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; letter-spacing: 6px; color: #fff; }
-  .header-right { text-align: right; }
-  .header-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
-  .header-status { font-size: 11px; color: var(--green); margin-top: 4px; }
-  .header-status::before { content: '● '; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:32px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:32px; }
+  .grid-21 { display:grid; grid-template-columns:2fr 1fr; gap:12px; margin-bottom:32px; }
 
-  /* SECTION TITLE */
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:22px; position:relative; overflow:hidden; transition:border-color .3s; }
+  .card:hover { border-color:rgba(155,99,255,.35); }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(155,99,255,.3),transparent); }
+  .card-label { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+  .card-value { font-size:48px; font-weight:200; line-height:1; color:#fff; margin-bottom:8px; }
+  .card-sub { font-size:13px; color:#fff; opacity:.6; }
+  .card-delta { font-size:13px; margin-top:10px; font-weight:500; }
+  .card-accent-gold .card-value { color:var(--gold); }
+  .card-accent-violet .card-value { color:var(--violet); }
+  .card-accent-rose .card-value { color:var(--rose); }
+  .card-accent-red .card-value { color:var(--red); }
+  .card-accent-green .card-value { color:var(--green); }
 
-  /* GRID */
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
-  .grid-21 { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 32px; }
+  .mini-bars { display:flex; align-items:flex-end; gap:3px; height:40px; margin-top:14px; }
+  .mini-bar { flex:1; background:rgba(155,99,255,.3); border-radius:2px; animation:barGrow .6s ease-out both; }
+  @keyframes barGrow { from{transform:scaleY(0);transform-origin:bottom} to{transform:scaleY(1)} }
 
-  /* CARD */
-  .card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
-  .card:hover { border-color: rgba(155,99,255,0.35); }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(155,99,255,0.3), transparent);
-  }
+  .table-card { padding:0; }
+  .table-header { padding:14px 22px; border-bottom:1px solid var(--border); font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); display:grid; }
+  .table-row { padding:14px 22px; border-bottom:1px solid rgba(255,255,255,.04); display:grid; align-items:center; font-size:13px; color:#fff; transition:background .2s; }
+  .table-row:hover { background:rgba(155,99,255,.05); }
+  .table-row:last-child { border-bottom:none; }
+  .incidents-grid { grid-template-columns:1fr 110px 110px 80px; }
+  .peligro-grid { grid-template-columns:1fr 1fr 140px 90px; }
+  .usuarios-grid { grid-template-columns:150px 130px 70px 80px 65px 65px 65px 65px 65px 65px 110px; }
+  .sesiones-grid { grid-template-columns:120px 1fr 110px 90px 100px 100px 90px; }
 
-  .card-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-  .card-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 300;
-    line-height: 1;
-    color: #fff;
-    margin-bottom: 6px;
-  }
-  .card-sub { font-size: 10px; color: var(--muted); }
-  .card-delta { font-size: 10px; margin-top: 8px; }
-  .card-delta.up { color: var(--green); }
-  .card-delta.down { color: var(--red); }
+  .badge { display:inline-block; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+  .badge-red { background:rgba(231,76,60,.15); color:var(--red); border:1px solid rgba(231,76,60,.3); }
+  .badge-green { background:rgba(46,204,113,.12); color:var(--green); border:1px solid rgba(46,204,113,.3); }
+  .badge-violet { background:rgba(155,99,255,.15); color:var(--violet); border:1px solid rgba(155,99,255,.3); }
+  .badge-gold { background:rgba(255,227,122,.12); color:var(--gold); border:1px solid rgba(255,227,122,.3); }
+  .badge-orange { background:rgba(255,140,0,.12); color:#FF8C00; border:1px solid rgba(255,140,0,.3); }
 
-  .card-accent-gold .card-value { color: var(--gold); }
-  .card-accent-violet .card-value { color: var(--violet); }
-  .card-accent-rose .card-value { color: var(--rose); }
-  .card-accent-red .card-value { color: var(--red); }
-  .card-accent-green .card-value { color: var(--green); }
+  .stat-pill { display:inline-flex; align-items:center; justify-content:center; min-width:32px; padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; }
+  .stat-chat { background:rgba(155,99,255,.15); color:var(--violet); }
+  .stat-foto { background:rgba(255,227,122,.12); color:var(--gold); }
+  .stat-silencio { background:rgba(243,185,217,.12); color:var(--rose); }
+  .stat-peligro { background:rgba(231,76,60,.12); color:var(--red); }
+  .stat-puente { background:rgba(46,204,113,.12); color:var(--green); }
+  .stat-manos { background:rgba(255,140,0,.12); color:#FF8C00; }
 
-  /* CHART BAR */
-  .mini-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin-top: 12px; }
-  .mini-bar {
-    flex: 1;
-    background: rgba(155,99,255,0.3);
-    border-radius: 2px;
-    transition: background 0.3s;
-    animation: barGrow 0.6s ease-out both;
-  }
-  .mini-bar:hover { background: rgba(155,99,255,0.7); }
-  @keyframes barGrow { from { transform: scaleY(0); transform-origin: bottom; } to { transform: scaleY(1); } }
+  /* Donut */
+  .donut-container { display:flex; align-items:center; gap:20px; margin-top:14px; }
+  .donut { position:relative; width:110px; height:110px; flex-shrink:0; }
+  .donut svg { transform:rotate(-90deg); }
+  .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; font-weight:300; color:#fff; text-align:center; }
+  .donut-legend { flex:1; }
+  .donut-item { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:14px; color:#fff; }
+  .donut-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
 
-  /* TABLE */
-  .table-card { padding: 0; }
-  .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: grid; }
-  .table-row { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); display: grid; align-items: center; font-size: 11px; transition: background 0.2s; }
-  .table-row:hover { background: rgba(155,99,255,0.05); }
-  .table-row:last-child { border-bottom: none; }
+  /* Barras horizontales */
+  .bar-item { margin-bottom:10px; }
+  .bar-label { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:4px; }
+  .bar-track { background:rgba(255,255,255,0.06); border-radius:4px; height:8px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; transition:width .6s ease; }
 
-  .incidents-grid { grid-template-columns: 1fr 80px 100px 60px; }
-  .peligro-grid { grid-template-columns: 1fr 120px 80px; }
-  .puente-grid { grid-template-columns: 1fr 80px 60px; }
+  .loading { opacity:.5; font-size:13px; color:var(--muted); animation:blink 1.5s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:.4} 50%{opacity:.9} }
+  .overflow-x { overflow-x:auto; }
 
-  .badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .badge-red { background: rgba(192,57,43,0.2); color: var(--red); border: 1px solid rgba(192,57,43,0.3); }
-  .badge-green { background: rgba(39,174,96,0.15); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
-  .badge-violet { background: rgba(155,99,255,0.15); color: var(--violet); border: 1px solid rgba(155,99,255,0.3); }
-  .badge-gold { background: rgba(255,227,122,0.1); color: var(--gold); border: 1px solid rgba(255,227,122,0.2); }
-  .badge-gray { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+  .liq-card { background:linear-gradient(135deg,rgba(155,99,255,0.08),rgba(255,227,122,0.05)); border:1px solid rgba(155,99,255,0.2); border-radius:12px; padding:16px; margin-bottom:10px; }
+  .liq-nombre { font-size:15px; font-weight:500; color:#fff; margin-bottom:6px; }
+  .liq-row { display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); margin-bottom:4px; }
+  .liq-monto { color:var(--gold); font-weight:600; font-size:15px; }
+  .liq-comision { color:var(--violet); font-weight:600; }
 
-  /* DONUT */
-  .donut-container { display: flex; align-items: center; gap: 20px; margin-top: 12px; }
-  .donut { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
-  .donut svg { transform: rotate(-90deg); }
-  .donut-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #fff; }
-  .donut-legend { flex: 1; }
-  .donut-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 10px; color: var(--muted); }
-  .donut-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  footer { margin-top:48px; padding-top:24px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .footer-text { font-size:13px; color:var(--muted); }
 
-  /* LOADING */
-  .loading { opacity: 0.4; font-size: 10px; letter-spacing: 1px; color: var(--muted); animation: blink 1.5s ease-in-out infinite; }
-  @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
-
-  /* FOOTER */
-  footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .footer-text { font-size: 9px; color: var(--muted); letter-spacing: 1px; }
-  .footer-update { font-size: 9px; color: var(--muted); }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .grid-4 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); }
-    .grid-21 { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 480px) {
-    .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-  }
-
-  .error-text { font-size: 10px; color: var(--red); }
+  @media(max-width:900px){ .grid-4{grid-template-columns:repeat(2,1fr)} .grid-21,.grid-3{grid-template-columns:1fr} }
+  @media(max-width:600px){ .grid-4,.grid-2{grid-template-columns:1fr} .card-value{font-size:36px} }
 </style>
 </head>
 <body>
 <div class="wrapper">
-
   <header>
     <div class="logo">
       <div class="logo-ring"></div>
@@ -204,7 +122,6 @@
     </div>
   </header>
 
-  <!-- KPIs PRINCIPALES -->
   <div class="section-title">Métricas Globales</div>
   <div class="grid-4">
     <div class="card card-accent-gold">
@@ -214,23 +131,22 @@
       <div class="mini-bars" id="users-bars"></div>
     </div>
     <div class="card card-accent-violet">
-      <div class="card-label">Usuarios Activos Hoy</div>
+      <div class="card-label">Activos Hoy</div>
       <div class="card-value" id="active-today">—</div>
-      <div class="card-sub">con sesión en las últimas 24hs</div>
+      <div class="card-sub">sesión en las últimas 24hs</div>
     </div>
     <div class="card card-accent-rose">
-      <div class="card-label">Conversaciones</div>
+      <div class="card-label">Mensajes</div>
       <div class="card-value" id="total-conv">—</div>
       <div class="card-sub">total de interacciones</div>
     </div>
     <div class="card card-accent-green">
-      <div class="card-label">Plan Activo</div>
+      <div class="card-label">Con Suscripción</div>
       <div class="card-value" id="paid-users">—</div>
-      <div class="card-sub">usuarios con suscripción</div>
+      <div class="card-sub">usuarios con plan activo</div>
     </div>
   </div>
 
-  <!-- PELIGRO + PUENTE -->
   <div class="grid-2">
     <div class="card card-accent-red">
       <div class="card-label">AuriPeligro — Activaciones</div>
@@ -239,214 +155,308 @@
       <div class="card-delta" id="peligro-activos"></div>
     </div>
     <div class="card card-accent-violet">
-      <div class="card-label">AuriPuente — Solicitudes</div>
-      <div class="card-value" id="puente-total">—</div>
-      <div class="card-sub">conexiones con profesionales</div>
+      <div class="card-label">Sesiones AuriPuente</div>
+      <div class="card-value" id="sesiones-total">—</div>
+      <div class="card-sub">contactos con profesionales</div>
+      <div class="card-delta" id="sesiones-crisis"></div>
     </div>
   </div>
 
-  <!-- DISTRIBUCIÓN DE PLANES -->
+  <!-- GRÁFICOS: Género + Ciudades + Países -->
+  <div class="section-title">Distribución de Usuarios</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-label">Género</div>
+      <div class="donut-container" id="genero-donut"><div class="loading">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Top Ciudades</div>
+      <div id="ciudades-bars" style="margin-top:8px"><div class="loading">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Top Países</div>
+      <div id="paises-bars" style="margin-top:8px"><div class="loading">Cargando...</div></div>
+    </div>
+  </div>
+
   <div class="grid-21">
     <div class="card table-card">
-      <div class="section-title" style="padding: 16px 20px 8px; margin-bottom:0; border-bottom: 1px solid var(--border);">Incidentes Recientes</div>
+      <div class="section-title" style="padding:16px 22px 10px;margin-bottom:0;border-bottom:1px solid var(--border);">Incidentes Recientes</div>
       <div class="table-header incidents-grid">
-        <span>Mensaje</span>
-        <span>Endpoint</span>
-        <span>Tipo</span>
-        <span>Estado</span>
+        <span>Mensaje</span><span>Tipo</span><span>Categoría</span><span>Estado</span>
       </div>
-      <div id="incidents-list">
-        <div style="padding:20px; text-align:center;" class="loading">Cargando...</div>
-      </div>
+      <div id="incidents-list"><div style="padding:24px;text-align:center;" class="loading">Cargando...</div></div>
     </div>
-
     <div class="card">
       <div class="card-label">Distribución de Planes</div>
-      <div class="donut-container" id="plans-donut">
-        <div style="text-align:center;" class="loading">Cargando...</div>
-      </div>
+      <div class="donut-container" id="plans-donut"><div class="loading">Cargando...</div></div>
     </div>
   </div>
 
-  <!-- ACTIVACIONES PELIGRO -->
+  <div class="section-title">Usuarios — Actividad Detallada</div>
+  <div class="card table-card" style="margin-bottom:32px;">
+    <div class="overflow-x">
+      <div class="table-header usuarios-grid" style="min-width:1100px;">
+        <span>Nombre</span><span>Email</span><span>Plan</span><span>Ciudad/País</span>
+        <span style="text-align:center">💬</span><span style="text-align:center">📸</span>
+        <span style="text-align:center">🤫</span><span style="text-align:center">🚨</span>
+        <span style="text-align:center">🤝</span><span style="text-align:center">🎙</span>
+        <span>Última actividad</span>
+      </div>
+      <div id="usuarios-list" style="min-width:1100px;"><div style="padding:24px;text-align:center;" class="loading">Cargando...</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">AuriPuente — Sesiones con Profesionales</div>
+  <div class="card table-card" style="margin-bottom:32px;">
+    <div class="overflow-x">
+      <div class="table-header sesiones-grid" style="min-width:800px;">
+        <span>Fecha</span><span>Profesional</span><span>Especialidad</span>
+        <span>Canal</span><span>Derivación</span><span>Honorarios</span><span>Comisión</span>
+      </div>
+      <div id="sesiones-list" style="min-width:800px;"><div style="padding:24px;text-align:center;" class="loading">Cargando...</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">AuriPuente — Liquidaciones (ciclo 30 días)</div>
+  <div class="grid-3" id="liquidaciones-container">
+    <div class="card"><div class="loading" style="padding:12px">Cargando...</div></div>
+  </div>
+
   <div class="section-title">AuriPeligro — Últimas Activaciones</div>
   <div class="card table-card" style="margin-bottom:32px;">
     <div class="table-header peligro-grid">
-      <span>Usuario</span>
-      <span>Fecha</span>
-      <span>Estado</span>
+      <span>Nombre</span><span>Email</span><span>Fecha</span><span>Estado</span>
     </div>
-    <div id="peligro-list">
-      <div style="padding:20px; text-align:center;" class="loading">Cargando...</div>
-    </div>
-  </div>
-
-  <!-- REGISTRO DE INCIDENTES -->
-  <div class="section-title">Registro Completo de Incidentes</div>
-  <div class="card table-card" style="margin-bottom:32px;">
-    <div class="table-header incidents-grid">
-      <span>Mensaje</span>
-      <span>Endpoint</span>
-      <span>Tipo</span>
-      <span>Resuelto</span>
-    </div>
-    <div id="registro-list">
-      <div style="padding:20px; text-align:center;" class="loading">Cargando...</div>
-    </div>
+    <div id="peligro-list"><div style="padding:24px;text-align:center;" class="loading">Cargando...</div></div>
   </div>
 
   <footer>
     <div class="footer-text">AURIONA · powered by ferst · datos en tiempo real</div>
-    <div class="footer-update" id="last-update"></div>
+    <div id="last-update" style="font-size:13px;color:var(--muted);"></div>
   </footer>
-
 </div>
 
 <script>
-const SUPABASE_URL = 'https://sunvfwrcgwvyknawxgkc.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bnZmd3JjZ3d2eWtuYXd4Z2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NjEzOTMsImV4cCI6MjA4NjMzNzM5M30.BI1Juk172pxXVLMRASVcYEsGgLIcHKRUT5o9ZHrgqG4';
-
-async function query(table, params = '') {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'count=exact'
-    }
-  });
-  const count = res.headers.get('content-range')?.split('/')[1];
-  const data = await res.json();
-  return { data, count: count ? parseInt(count) : (Array.isArray(data) ? data.length : 0) };
-}
+const API = 'https://auriona-api.vercel.app';
 
 function formatDate(d) {
   if (!d) return '—';
-  return new Date(d).toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
+  return new Date(d).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
 }
 
-function miniBar(pct, delay) {
-  const h = Math.max(4, Math.round(pct * 40));
-  return `<div class="mini-bar" style="height:${h}px;animation-delay:${delay}s"></div>`;
+function shortId(id) {
+  if (!id) return '—';
+  return id.substring(0,10)+'...';
+}
+
+function renderBars(containerId, items, color) {
+  const el = document.getElementById(containerId);
+  if (!items || !items.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px">Sin datos aún</div>'; return; }
+  const max = items[0].cantidad;
+  el.innerHTML = items.map(item => `
+    <div class="bar-item">
+      <div class="bar-label"><span>${item.nombre}</span><span style="color:#fff;font-weight:600">${item.cantidad}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(item.cantidad/max*100)}%;background:${color}"></div></div>
+    </div>`).join('');
 }
 
 async function loadDashboard() {
   try {
-    // USUARIOS
-    const usuarios = await query('usuarios%20de%20auriona', '?select=*');
-    document.getElementById('total-users').textContent = usuarios.count.toLocaleString();
+    const res = await fetch(`${API}/api/dashboard`);
+    if (!res.ok) throw new Error('Error ' + res.status);
+    const d = await res.json();
 
-    // Usuarios activos hoy
-    const hoy = new Date(); hoy.setHours(0,0,0,0);
-    const activosHoy = (usuarios.data || []).filter(u => u.actualizado_en && new Date(u.actualizado_en) >= hoy);
-    document.getElementById('active-today').textContent = activosHoy.length;
+    const userMap = {};
+    (d.usuarios_detalle || []).forEach(u => { userMap[u.user_id] = u; });
 
-    // Usuarios con plan pago
-    const pagos = (usuarios.data || []).filter(u => u.plan && u.plan !== 'trial');
-    document.getElementById('paid-users').textContent = pagos.length;
+    document.getElementById('total-users').textContent = d.usuarios.total.toLocaleString();
+    document.getElementById('active-today').textContent = d.usuarios.activosHoy.toLocaleString();
+    document.getElementById('total-conv').textContent = d.conversaciones.toLocaleString();
+    document.getElementById('paid-users').textContent = d.usuarios.pagos.toLocaleString();
+    document.getElementById('peligro-total').textContent = d.peligro.total.toLocaleString();
 
-    // Mini bars usuarios por día (simulado con datos reales)
-    const bars = document.getElementById('users-bars');
-    const vals = [0.3, 0.5, 0.4, 0.7, 0.6, 0.8, 1.0];
-    bars.innerHTML = vals.map((v,i) => miniBar(v, i*0.08)).join('');
+    const sesiones = d.sesiones || [];
+    document.getElementById('sesiones-total').textContent = sesiones.length.toLocaleString();
+    const crisis = sesiones.filter(s => s.tipo_derivacion === 'automatica').length;
+    document.getElementById('sesiones-crisis').innerHTML = crisis > 0
+      ? `<span style="color:var(--red)">● ${crisis} derivación/es automática/s</span>`
+      : `<span style="color:var(--muted)">Sin derivaciones automáticas</span>`;
 
-    // Planes donut
-    const trial = (usuarios.data || []).filter(u => !u.plan || u.plan === 'trial').length;
-    const personal = (usuarios.data || []).filter(u => u.plan === 'personal').length;
-    const legado = (usuarios.data || []).filter(u => u.plan === 'legado').length;
-    const total = usuarios.count || 1;
-    const pTrial = Math.round(trial/total*100);
-    const pPersonal = Math.round(personal/total*100);
-    const pLegado = Math.round(legado/total*100);
-
-    const r = 28, circ = 2 * Math.PI * r;
-    const dTrial = circ * (trial/total);
-    const dPersonal = circ * (personal/total);
-    const dLegado = circ * (legado/total);
-
-    document.getElementById('plans-donut').innerHTML = `
-      <div class="donut">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="${r}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
-          <circle cx="40" cy="40" r="${r}" fill="none" stroke="#555" stroke-width="10"
-            stroke-dasharray="${dTrial} ${circ}" stroke-dashoffset="0"/>
-          <circle cx="40" cy="40" r="${r}" fill="none" stroke="#9B63FF" stroke-width="10"
-            stroke-dasharray="${dPersonal} ${circ}" stroke-dashoffset="${-dTrial}"/>
-          <circle cx="40" cy="40" r="${r}" fill="none" stroke="#FFE37A" stroke-width="10"
-            stroke-dasharray="${dLegado} ${circ}" stroke-dashoffset="${-(dTrial+dPersonal)}"/>
-        </svg>
-        <div class="donut-center">${total}</div>
-      </div>
-      <div class="donut-legend">
-        <div class="donut-item"><div class="donut-dot" style="background:#555"></div>Trial ${pTrial}%</div>
-        <div class="donut-item"><div class="donut-dot" style="background:#9B63FF"></div>Personal ${pPersonal}%</div>
-        <div class="donut-item"><div class="donut-dot" style="background:#FFE37A"></div>Legado ${pLegado}%</div>
-      </div>`;
-
-    // CONVERSACIONES
-    const conv = await query('conversaciones', '?select=id');
-    document.getElementById('total-conv').textContent = conv.count.toLocaleString();
-
-    // PELIGRO
-    const peligro = await query('auriona_peligro', '?select=*&order=actualizado_en.desc&limit=10');
-    const peligroActivos = (peligro.data || []).filter(p => p.activo);
-    document.getElementById('peligro-total').textContent = peligro.count.toLocaleString();
-    document.getElementById('peligro-activos').innerHTML = peligroActivos.length > 0
-      ? `<span style="color:var(--red)">● ${peligroActivos.length} activo(s) ahora</span>`
+    document.getElementById('peligro-activos').innerHTML = d.peligro.activos > 0
+      ? `<span style="color:var(--red)">● ${d.peligro.activos} activo(s) ahora</span>`
       : `<span style="color:var(--green)">● Sin alertas activas</span>`;
 
-    const peligroList = document.getElementById('peligro-list');
-    if (!peligro.data || peligro.data.length === 0) {
-      peligroList.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:11px">Sin activaciones registradas</div>';
-    } else {
-      peligroList.innerHTML = peligro.data.slice(0,8).map(p => `
-        <div class="table-row peligro-grid">
-          <span style="color:var(--muted)">${p.id_de_usuario || p['id de usuario'] || '—'}</span>
-          <span style="color:var(--muted);font-size:10px">${formatDate(p.actualizado_en)}</span>
-          <span>${p.activo ? '<span class="badge badge-red">Activo</span>' : '<span class="badge badge-green">Cerrado</span>'}</span>
-        </div>`).join('');
-    }
+    const bars = document.getElementById('users-bars');
+    bars.innerHTML = [0.3,0.5,0.4,0.7,0.6,0.8,1.0].map((v,i) => {
+      const h = Math.max(4, Math.round(v*40));
+      return `<div class="mini-bar" style="height:${h}px;animation-delay:${i*0.08}s"></div>`;
+    }).join('');
 
-    // INCIDENTES recientes
-    const incidentes = await query('incidentes%20de%20auriona', '?select=*&order=marca_de_tiempo.desc&limit=6');
+    // TORTA GÉNERO
+    const g = d.usuarios.genero || { hombre:0, mujer:0, otro:0 };
+    const totalG = Math.max(g.hombre + g.mujer + g.otro, 1);
+    const circ = 2*Math.PI*40;
+    const dH = circ*(g.hombre/totalG);
+    const dM = circ*(g.mujer/totalG);
+    const dO = circ*(g.otro/totalG);
+    document.getElementById('genero-donut').innerHTML = `
+      <div class="donut">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="16"/>
+          <circle cx="55" cy="55" r="40" fill="none" stroke="#89CFF0" stroke-width="16" stroke-dasharray="${dH} ${circ}" stroke-dashoffset="0"/>
+          <circle cx="55" cy="55" r="40" fill="none" stroke="#F3B9D9" stroke-width="16" stroke-dasharray="${dM} ${circ}" stroke-dashoffset="${-dH}"/>
+          <circle cx="55" cy="55" r="40" fill="none" stroke="#FFE37A" stroke-width="16" stroke-dasharray="${dO} ${circ}" stroke-dashoffset="${-(dH+dM)}"/>
+        </svg>
+        <div class="donut-center">${totalG}<br><span style="font-size:9px;color:var(--muted)">usuarios</span></div>
+      </div>
+      <div class="donut-legend">
+        <div class="donut-item"><div class="donut-dot" style="background:#89CFF0"></div>♂ Hombre ${Math.round(g.hombre/totalG*100)}%</div>
+        <div class="donut-item"><div class="donut-dot" style="background:#F3B9D9"></div>♀ Mujer ${Math.round(g.mujer/totalG*100)}%</div>
+        <div class="donut-item"><div class="donut-dot" style="background:#FFE37A"></div>⚧ Otro ${Math.round(g.otro/totalG*100)}%</div>
+      </div>`;
+
+    // BARRAS CIUDADES Y PAÍSES
+    renderBars('ciudades-bars', d.usuarios.topCiudades, '#9B63FF');
+    renderBars('paises-bars', d.usuarios.topPaises, '#FFE37A');
+
+    // DONUT PLANES
+    const total = Math.max(d.usuarios.total, 1);
+    const circP = 2*Math.PI*32;
+    const dT = circP*(d.usuarios.trial/total);
+    const dP = circP*(d.usuarios.personal/total);
+    const dL = circP*(d.usuarios.legado/total);
+    const dTe = circP*((d.usuarios.tester||0)/total);
+    document.getElementById('plans-donut').innerHTML = `
+      <div class="donut" style="width:90px;height:90px">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="32" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="12"/>
+          <circle cx="45" cy="45" r="32" fill="none" stroke="#555" stroke-width="12" stroke-dasharray="${dT} ${circP}" stroke-dashoffset="0"/>
+          <circle cx="45" cy="45" r="32" fill="none" stroke="#9B63FF" stroke-width="12" stroke-dasharray="${dP} ${circP}" stroke-dashoffset="${-dT}"/>
+          <circle cx="45" cy="45" r="32" fill="none" stroke="#FFE37A" stroke-width="12" stroke-dasharray="${dL} ${circP}" stroke-dashoffset="${-(dT+dP)}"/>
+          <circle cx="45" cy="45" r="32" fill="none" stroke="#2ecc71" stroke-width="12" stroke-dasharray="${dTe} ${circP}" stroke-dashoffset="${-(dT+dP+dL)}"/>
+        </svg>
+        <div class="donut-center" style="font-size:22px">${total}</div>
+      </div>
+      <div class="donut-legend">
+        <div class="donut-item"><div class="donut-dot" style="background:#555"></div>Trial ${Math.round(d.usuarios.trial/total*100)}%</div>
+        <div class="donut-item"><div class="donut-dot" style="background:#9B63FF"></div>Personal ${Math.round(d.usuarios.personal/total*100)}%</div>
+        <div class="donut-item"><div class="donut-dot" style="background:#FFE37A"></div>Legado ${Math.round(d.usuarios.legado/total*100)}%</div>
+        <div class="donut-item"><div class="donut-dot" style="background:#2ecc71"></div>Tester ${Math.round((d.usuarios.tester||0)/total*100)}%</div>
+      </div>`;
+
+    // INCIDENTES
     const incList = document.getElementById('incidents-list');
-    if (!incidentes.data || incidentes.data.length === 0) {
-      incList.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:11px">Sin incidentes registrados</div>';
+    if (!d.incidentes.length) {
+      incList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">Sin incidentes registrados</div>';
     } else {
-      incList.innerHTML = incidentes.data.map(i => `
+      incList.innerHTML = d.incidentes.map(i => `
         <div class="table-row incidents-grid">
-          <span style="font-size:10px;color:var(--text)">${(i.mensaje || '—').substring(0,40)}</span>
-          <span style="font-size:9px;color:var(--muted)">${(i.punto_final || i['punto final'] || '—').substring(0,20)}</span>
-          <span><span class="badge badge-violet">${i.tipo || '—'}</span></span>
-          <span>${i.resuelto ? '<span class="badge badge-green">OK</span>' : '<span class="badge badge-red">Abierto</span>'}</span>
+          <span style="font-size:12px;color:var(--muted)">${(i.mensaje||'—').substring(0,40)}</span>
+          <span><span class="badge badge-violet">${i.tipo||'—'}</span></span>
+          <span style="font-size:12px;color:var(--muted)">${i.categoria||'—'}</span>
+          <span>${i.resuelto?'<span class="badge badge-green">OK</span>':'<span class="badge badge-red">Abierto</span>'}</span>
         </div>`).join('');
     }
 
-    // REGISTRO INCIDENTES
-    const registro = await query('registro_de_incidentes', '?select=*&order=marca_de_tiempo.desc&limit=10');
-    const regList = document.getElementById('registro-list');
-    if (!registro.data || registro.data.length === 0) {
-      regList.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:11px">Sin registros</div>';
+    // USUARIOS
+    const usuariosList = document.getElementById('usuarios-list');
+    if (!d.usuarios_detalle || !d.usuarios_detalle.length) {
+      usuariosList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">Sin datos de usuarios</div>';
     } else {
-      regList.innerHTML = registro.data.map(i => `
-        <div class="table-row incidents-grid">
-          <span style="font-size:10px;color:var(--text)">${(i.mensaje || '—').substring(0,40)}</span>
-          <span style="font-size:9px;color:var(--muted)">${(i.punto_final || i['punto final'] || '—').substring(0,20)}</span>
-          <span><span class="badge badge-violet">${i.tipo || '—'}</span></span>
-          <span>${i.resuelto ? '<span class="badge badge-green">OK</span>' : '<span class="badge badge-red">Abierto</span>'}</span>
+      usuariosList.innerHTML = d.usuarios_detalle.map(u => {
+        const planBadge = u.plan === 'personal' ? '<span class="badge badge-violet">Plus</span>'
+          : u.plan === 'legado' ? '<span class="badge badge-gold">Legado</span>'
+          : u.plan === 'tester' ? '<span class="badge badge-green">Tester</span>'
+          : '<span style="font-size:10px;color:#666">Trial</span>';
+        const generoIcon = u.genero === 'Hombre' ? '♂' : u.genero === 'Mujer' ? '♀' : u.genero ? '⚧' : '';
+        const ubicacion = [u.ciudad, u.pais].filter(Boolean).join(', ') || '—';
+        return `<div class="table-row usuarios-grid">
+          <span style="font-weight:500">${u.nombre||'<span style="color:#555">—</span>'} <span style="color:var(--muted);font-size:11px">${generoIcon}</span></span>
+          <span style="font-size:11px;color:var(--muted)">${u.email||'—'}</span>
+          <span>${planBadge}</span>
+          <span style="font-size:11px;color:var(--muted)">${ubicacion}</span>
+          <span style="text-align:center"><span class="stat-pill stat-chat">${u.chat||0}</span></span>
+          <span style="text-align:center"><span class="stat-pill stat-foto">${u.aurifoto||0}</span></span>
+          <span style="text-align:center"><span class="stat-pill stat-silencio">${u.aurisilencio||0}</span></span>
+          <span style="text-align:center"><span class="stat-pill stat-peligro">${u.auripeligro||0}</span></span>
+          <span style="text-align:center"><span class="stat-pill stat-puente">${u.auripuente||0}</span></span>
+          <span style="text-align:center"><span class="stat-pill stat-manos">${u.manos_libres||0}</span></span>
+          <span style="font-size:11px;color:var(--muted)">${formatDate(u.ultima_actividad)}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // SESIONES
+    const sesionesList = document.getElementById('sesiones-list');
+    if (!sesiones.length) {
+      sesionesList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">Sin sesiones registradas aún</div>';
+    } else {
+      sesionesList.innerHTML = sesiones.map(s => {
+        const derivBadge = s.tipo_derivacion === 'automatica' ? '<span class="badge badge-red">Crisis</span>' : '<span class="badge badge-violet">Voluntaria</span>';
+        const canalBadge = s.canal === 'whatsapp' ? '<span class="badge badge-green">WhatsApp</span>' : '<span class="badge badge-orange">Llamada</span>';
+        return `<div class="table-row sesiones-grid">
+          <span style="font-size:11px;color:var(--muted)">${formatDate(s.created_at)}</span>
+          <span style="font-weight:500">${s.profesional_nombre||'—'}</span>
+          <span style="font-size:12px;color:var(--violet)">${s.profesional_especialidad||'—'}</span>
+          <span>${canalBadge}</span><span>${derivBadge}</span>
+          <span style="color:var(--gold);font-weight:500">${s.honorarios||'—'}</span>
+          <span style="color:var(--violet)">${s.comision_auriona ? '$'+parseFloat(s.comision_auriona).toFixed(2) : '—'}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // LIQUIDACIONES
+    const hace30 = new Date(Date.now() - 30*24*60*60*1000);
+    const sesiones30 = sesiones.filter(s => new Date(s.created_at) >= hace30);
+    const porProf = {};
+    for (const s of sesiones30) {
+      const nombre = s.profesional_nombre || 'Sin nombre';
+      if (!porProf[nombre]) porProf[nombre] = { nombre, especialidad: s.profesional_especialidad||'—', sesiones:0, honorarios:0, comision:0 };
+      porProf[nombre].sesiones++;
+      if (s.honorarios) porProf[nombre].honorarios += parseFloat(s.honorarios.replace(/[^0-9.]/g,'')) || 0;
+      if (s.comision_auriona) porProf[nombre].comision += parseFloat(s.comision_auriona) || 0;
+    }
+    const liqContainer = document.getElementById('liquidaciones-container');
+    const profs = Object.values(porProf);
+    if (!profs.length) {
+      liqContainer.innerHTML = '<div class="card"><div style="color:var(--muted);font-size:13px;padding:8px">Sin sesiones en los últimos 30 días</div></div>';
+    } else {
+      liqContainer.innerHTML = profs.map(p => `
+        <div class="card">
+          <div class="liq-nombre">${p.nombre}</div>
+          <div style="font-size:11px;color:var(--violet);margin-bottom:12px">${p.especialidad}</div>
+          <div class="liq-row"><span>Sesiones</span><span style="color:#fff;font-weight:600">${p.sesiones}</span></div>
+          <div class="liq-row"><span>Honorarios totales</span><span class="liq-monto">$${p.honorarios.toFixed(2)}</span></div>
+          <div class="liq-row"><span>A liquidar al prof.</span><span style="color:var(--green);font-weight:600">$${(p.honorarios-p.comision).toFixed(2)}</span></div>
+          <div class="liq-row"><span>Comisión Auriona 10%</span><span class="liq-comision">$${p.comision.toFixed(2)}</span></div>
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">Próxima liquidación: ${new Date(Date.now()+30*24*60*60*1000).toLocaleDateString('es-AR')}</div>
         </div>`).join('');
     }
 
-    // PUENTE
-    const puente = await query('auriona_profesion', '?select=*');
-    document.getElementById('puente-total').textContent = puente.count.toLocaleString();
+    // PELIGRO
+    const peligroList = document.getElementById('peligro-list');
+    if (!d.peligro.recientes.length) {
+      peligroList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:13px">Sin activaciones registradas</div>';
+    } else {
+      peligroList.innerHTML = d.peligro.recientes.map(p => {
+        const u = userMap[p.user_id] || {};
+        return `<div class="table-row peligro-grid">
+          <span style="font-weight:500">${u.nombre||'<span style="color:#555">Sin nombre</span>'}</span>
+          <span style="font-size:11px;color:var(--muted)">${u.email||shortId(p.user_id)}</span>
+          <span style="color:var(--muted);font-size:12px">${formatDate(p.updated_at)}</span>
+          <span>${p.activo?'<span class="badge badge-red">Activo</span>':'<span class="badge badge-green">Cerrado</span>'}</span>
+        </div>`;
+      }).join('');
+    }
 
     document.getElementById('db-status').textContent = 'Conectado · Datos en vivo';
+    document.getElementById('db-status').className = 'header-status';
     document.getElementById('last-update').textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-AR');
 
   } catch(e) {
     document.getElementById('db-status').textContent = 'Error de conexión';
-    document.getElementById('db-status').style.color = 'var(--red)';
+    document.getElementById('db-status').className = 'header-status error';
     console.error(e);
   }
 }
